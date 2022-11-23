@@ -9,7 +9,11 @@ setuptools.setup(
       url='https://www.example.com',
       packages=['outlook_calendar_sync'],
       install_requires=[
-
+        "selenium",
+        "beautifulsoup4",
+        "google-api-python-client",
+        "google-auth-httplib2",
+        "google-auth-oauthlib",
       ],
       entry_points={
         "console_scripts": [
