@@ -1,0 +1,7 @@
+venv/
+token.json
+cache.html
+credentials.json
+.env
+.DS_Store
+*.egg-info
