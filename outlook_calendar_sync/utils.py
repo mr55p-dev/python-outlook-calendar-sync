@@ -11,7 +11,6 @@ def find_event(tag):
 
 def get_event(detail: str):
     app_log.debug("Processing event with detail < %s >", detail)
-    print(detail)
     match = re.match(
         r'^(all day )?(?:event from )(\w+), (\w+) (\d+), (\d+) (?:([\d:]+))?\s?to (?:(\w+), (\w+) (\d+), (\d+))?(?:([\d:]+))? (.*)(?: \w{0,3} )(?=location|organiser|recurring|event)(?#After 3 chars)(?:(?:location )(.*?)(?=organiser))?(?#after match location)(?:(?:organiser )(.*?)(?: recurring)?(?= event shown as))?(?#Ater match organiser)(?:(?:recurring)?(?: event shown as) (\w+))$(?#After match event transparency)', detail)
     if not match:
@@ -50,8 +49,6 @@ def get_event(detail: str):
             "date": end_timestamp.strftime("%Y-%m-%d"),
             'timeZone': "Europe/London"
         }
-        print(start)
-        print(end)
     else:
         start_time = match.group(6)
         end_time = match.group(11)
