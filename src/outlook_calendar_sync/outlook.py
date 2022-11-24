@@ -1,4 +1,3 @@
-import logging
 from time import sleep
 
 from bs4 import BeautifulSoup
@@ -8,8 +7,6 @@ from selenium.webdriver.common.by import By
 
 from outlook_calendar_sync.utils import find_event
 from outlook_calendar_sync.utils import get_event
-
-app_log = logging.getLogger("application")
 
 
 def outlook_login(driver, username: str, password: str, auth_code=None, no_auth_code: bool = False):

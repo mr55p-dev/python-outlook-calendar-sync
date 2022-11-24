@@ -2,4 +2,4 @@
 Authors
 =======
 
-* Ellis Lunnon - https://pagemail.io
+* Ellis Lunnon - https://www.pagemail.io
