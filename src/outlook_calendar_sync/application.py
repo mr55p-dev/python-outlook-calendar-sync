@@ -1,13 +1,16 @@
-from datetime import datetime
-from datetime import timedelta
+from datetime import datetime, timedelta
 
-from outlook_calendar_sync.gcal import find_incorrect_gcal_events
-from outlook_calendar_sync.gcal import find_new_outlook_events
-from outlook_calendar_sync.gcal import get_gcal_api
-from outlook_calendar_sync.gcal import update_calendar
-from outlook_calendar_sync.outlook import get_selenium_driver
-from outlook_calendar_sync.outlook import outlook_login
-from outlook_calendar_sync.outlook import outlook_select_page_events
+from outlook_calendar_sync.gcal import (
+    find_incorrect_gcal_events,
+    find_new_outlook_events,
+    get_gcal_api,
+    update_calendar,
+)
+from outlook_calendar_sync.outlook import (
+    get_selenium_driver,
+    outlook_login,
+    outlook_select_page_events,
+)
 from outlook_calendar_sync.utils import log
 
 

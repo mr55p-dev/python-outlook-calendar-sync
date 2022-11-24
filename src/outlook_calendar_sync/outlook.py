@@ -5,8 +5,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 
-from outlook_calendar_sync.utils import find_event
-from outlook_calendar_sync.utils import get_event
+from outlook_calendar_sync.utils import find_event, get_event
 
 
 def outlook_login(driver, username: str, password: str, auth_code=None, no_auth_code: bool = False):
