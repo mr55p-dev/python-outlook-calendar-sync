@@ -43,9 +43,9 @@ Overview
     :alt: Supported implementations
     :target: https://pypi.org/project/outlook-calendar-sync
 
-.. |commits-since| image:: https://img.shields.io/github/commits-since/mr55p-dev/python-outlook-calendar-sync/v0.0.2.svg
+.. |commits-since| image:: https://img.shields.io/github/commits-since/mr55p-dev/python-outlook-calendar-sync/v0.0.1.svg
     :alt: Commits since latest release
-    :target: https://github.com/mr55p-dev/python-outlook-calendar-sync/compare/v0.0.2...main
+    :target: https://github.com/mr55p-dev/python-outlook-calendar-sync/compare/v0.0.1...main
 
 
 
