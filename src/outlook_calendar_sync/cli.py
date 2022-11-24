@@ -14,13 +14,32 @@ Why does this file exist, and why not put this in __main__?
 
   Also see (1) from http://click.pocoo.org/5/setuptools/#setuptools-integration
 """
-import argparse
+import logging
+import os
+import sys
+from argparse import ArgumentParser
 
-parser = argparse.ArgumentParser(description='Command description.')
-parser.add_argument('names', metavar='NAME', nargs=argparse.ZERO_OR_MORE,
-                    help="A name of something.")
+from outlook_calendar_sync.application import main
+from outlook_calendar_sync.utils import log
 
+parser = ArgumentParser("outlook-calendar-sync")
+parser.add_argument("-n", type=int, help="Number of days in the future to sync", default=5)
+parser.add_argument("--email", type=str, help="Outlook username to sync to")
+parser.add_argument("--password", type=str, help="Outlook password")
+parser.add_argument("--calendar-id", type=str, help="Google calendar ID to sync to")
+parser.add_argument("--auth-code", type=str, help="Microsoft authenticator 2fa code. If not specified, will ask for input during execution")
+parser.add_argument("--no-auth-code", action="store_true", help="Flag to set if no 2fa code is required, such as on a corporate network.")
+parser.add_argument("--show-browser", action="store_true", default=False, help="Show the browser window")
+args = parser.parse_args(sys.argv[1:])
 
-def main(args=None):
-    args = parser.parse_args(args=args)
-    print(args.names)
+username = args.email or os.getenv("OUTLOOK_USERNAME")
+password = args.password or os.getenv("OUTLOOK_PASSWORD")
+calendar_id = args.calendar_id or os.getenv("GCAL_CALENDAR_ID")
+
+if hasattr(logging, (log_level := os.getenv("OUTLOOK_LOG_LEVEL", "INFO"))):
+    log.setLevel(getattr(logging, log_level))
+else:
+    log.warning("Tried to set invalid log level %s, defaulting to INFO", log_level)
+    log.setLevel(logging.INFO)
+
+main(username, password, calendar_id, args)
