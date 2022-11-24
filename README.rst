@@ -14,7 +14,7 @@ Overview
         | |codecov|
     * - package
       - | |version| |wheel| |supported-versions| |supported-implementations|
-        | |commits-since|
+        .. | |commits-since|
 .. |docs| image:: https://readthedocs.org/projects/python-outlook-calendar-sync/badge/?style=flat
     :target: https://python-outlook-calendar-sync.readthedocs.io/
     :alt: Documentation Status
