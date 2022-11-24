@@ -6,12 +6,13 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 
-from outlook_calendar_sync.utils import find_event, get_event
+from outlook_calendar_sync.utils import find_event
+from outlook_calendar_sync.utils import get_event
 
 app_log = logging.getLogger("application")
 
 
-def outlook_login(driver, username: str, password: str, auth_code=None):
+def outlook_login(driver, username: str, password: str, auth_code=None, no_auth_code: bool = False):
     calendar_uri = "https://outlook.office.com/calendar/view/day"
     driver.get(calendar_uri)
 
@@ -29,15 +30,16 @@ def outlook_login(driver, username: str, password: str, auth_code=None):
     password_btn.send_keys(password)
     signin_btn_auth.click()
 
-    # Handle 2fa
-    auth_code_field = driver.find_element(By.ID, "idTxtBx_SAOTCC_OTC")
-    auth_code_submit = driver.find_element(By.ID, "idSubmit_SAOTCC_Continue")
+    if not no_auth_code:
+        # Handle 2fa
+        auth_code_field = driver.find_element(By.ID, "idTxtBx_SAOTCC_OTC")
+        auth_code_submit = driver.find_element(By.ID, "idSubmit_SAOTCC_Continue")
 
-    if not auth_code:
-        auth_code = input("Provide the authenticator code: ")
+        if not auth_code:
+            auth_code = input("Provide the authenticator code: ")
 
-    auth_code_field.send_keys(auth_code)
-    auth_code_submit.click()
+        auth_code_field.send_keys(auth_code)
+        auth_code_submit.click()
 
     stay_signed_in_btn = driver.find_element(By.ID, "idBtn_Back")
     stay_signed_in_btn.click()
@@ -50,9 +52,8 @@ def outlook_select_page_events(driver, days=1, delay=5):
     soup = BeautifulSoup(driver.page_source, features="html.parser")
     yield [get_event(i["aria-label"]) for i in soup.find_all(find_event)]
 
-    for _ in range(days-1):
-        next_page = driver.find_element(
-            By.XPATH, '//*[@id="MainModule"]/div[3]/div/div[1]/div[1]/button[3]')
+    for _ in range(days - 1):
+        next_page = driver.find_element(By.XPATH, '//*[@id="MainModule"]/div[3]/div/div[1]/div[1]/button[3]')
         next_page.click()
         sleep(delay)
 
