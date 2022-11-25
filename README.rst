@@ -14,7 +14,7 @@ Overview
         | |codecov|
     * - package
       - | |version| |wheel| |supported-versions| |supported-implementations|
-        | |commits-since|
+        .. | |commits-since|
 .. |docs| image:: https://readthedocs.org/projects/python-outlook-calendar-sync/badge/?style=flat
     :target: https://python-outlook-calendar-sync.readthedocs.io/
     :alt: Documentation Status
@@ -43,9 +43,9 @@ Overview
     :alt: Supported implementations
     :target: https://pypi.org/project/outlook-calendar-sync
 
-.. |commits-since| image:: https://img.shields.io/github/commits-since/mr55p-dev/python-outlook-calendar-sync/v0.0.1.svg
-    :alt: Commits since latest release
-    :target: https://github.com/mr55p-dev/python-outlook-calendar-sync/compare/v0.0.1...main
+.. .. |commits-since| image:: https://img.shields.io/github/commits-since/mr55p-dev/python-outlook-calendar-sync/v0.0.1.svg
+..     :alt: Commits since latest release
+..     :target: https://github.com/mr55p-dev/python-outlook-calendar-sync/compare/v0.0.1...main
 
 
 

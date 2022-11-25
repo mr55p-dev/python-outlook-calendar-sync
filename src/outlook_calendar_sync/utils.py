@@ -1,8 +1,13 @@
+import configparser
 import logging
 import re
 from datetime import datetime
+from os import PathLike
+from pathlib import Path
 
 log = logging.getLogger("application")
+log.addHandler(logging.StreamHandler())
+default_config_path = Path.home() / ".outlook-parser-config.ini"
 
 
 def find_event(tag):
@@ -66,3 +71,39 @@ def get_event(detail: str):
 
 def compare_events(g_event, o_event) -> bool:
     return g_event == o_event
+
+
+def _init_config(user_path: PathLike = None):
+    if user_path:
+        user_path = Path(user_path)
+    else:
+        user_path = default_config_path
+
+    log.info("Setting up default configuration file at %s", str(user_path))
+
+    config = configparser.ConfigParser()
+    config["DEFAULT"] = {
+        "daystofetch": 1,
+        "loglevel": "INFO",
+        "outlookurl": "https://outlook.office.com/calendar/view/day",
+        "requiresauthcode": True,
+        "pageloaddelay": 10,
+        "self": "firstname lastname",
+    }
+
+    config["OutlookCredentials"] = {"OutlookEmail": "user.name@example.com", "OutlookPassword": "password123"}
+    config["GoogleCredentials"] = {"GoogleCalendarID": "1234567890abcdef@group.calendar.google.com"}
+
+    config["config"] = {"daystofetch": 1}
+
+    with user_path.open("w") as f:
+        config.write(f)
+
+
+def load_config(config_file: PathLike = None):
+    if not config_file:
+        config_file = default_config_path
+    log.debug("Reading config file from %s", str(config_file))
+    config = configparser.ConfigParser()
+    config.read(str(config_file))
+    return config
