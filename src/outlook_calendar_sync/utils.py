@@ -88,6 +88,7 @@ def _init_config(user_path: PathLike = None):
         "outlookurl": "https://outlook.office.com/calendar/view/day",
         "requiresauthcode": True,
         "pageloaddelay": 10,
+        "self": "firstname lastname",
     }
 
     config["OutlookCredentials"] = {"OutlookEmail": "user.name@example.com", "OutlookPassword": "password123"}
