@@ -8,8 +8,14 @@ from selenium.webdriver.common.by import By
 from outlook_calendar_sync.utils import find_event, get_event
 
 
-def outlook_login(driver, username: str, password: str, auth_code=None, no_auth_code: bool = False):
-    calendar_uri = "https://outlook.office.com/calendar/view/day"
+def outlook_login(
+    driver,
+    username: str,
+    password: str,
+    calendar_uri: str,
+    auth_code=None,
+    no_auth_code: bool = False,
+):
     driver.get(calendar_uri)
 
     driver.implicitly_wait(10)

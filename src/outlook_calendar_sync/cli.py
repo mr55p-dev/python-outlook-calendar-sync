@@ -17,29 +17,80 @@ Why does this file exist, and why not put this in __main__?
 import logging
 import os
 import sys
-from argparse import ArgumentParser
+from argparse import ArgumentParser, Namespace
 
-from outlook_calendar_sync.application import main
-from outlook_calendar_sync.utils import log
+from outlook_calendar_sync.application import main as app
+from outlook_calendar_sync.utils import (
+    _init_config,
+    default_config_path,
+    load_config,
+    log,
+)
 
-parser = ArgumentParser("outlook-calendar-sync")
-parser.add_argument("-n", type=int, help="Number of days in the future to sync", default=5)
-parser.add_argument("--email", type=str, help="Outlook username to sync to")
-parser.add_argument("--password", type=str, help="Outlook password")
-parser.add_argument("--calendar-id", type=str, help="Google calendar ID to sync to")
-parser.add_argument("--auth-code", type=str, help="Microsoft authenticator 2fa code. If not specified, will ask for input during execution")
-parser.add_argument("--no-auth-code", action="store_true", help="Flag to set if no 2fa code is required, such as on a corporate network.")
-parser.add_argument("--show-browser", action="store_true", default=False, help="Show the browser window")
-args = parser.parse_args(sys.argv[1:])
 
-username = args.email or os.getenv("OUTLOOK_USERNAME")
-password = args.password or os.getenv("OUTLOOK_PASSWORD")
-calendar_id = args.calendar_id or os.getenv("GCAL_CALENDAR_ID")
+def app_handler(args: Namespace):
+    config = load_config(args.config)
+    config.read(args.config)
 
-if hasattr(logging, (log_level := os.getenv("OUTLOOK_LOG_LEVEL", "INFO"))):
-    log.setLevel(getattr(logging, log_level))
-else:
-    log.warning("Tried to set invalid log level %s, defaulting to INFO", log_level)
-    log.setLevel(logging.INFO)
+    username = args.email or config["OutlookCredentials"]["OutlookEmail"]
+    password = args.password or config["OutlookCredentials"]["OutlookPassword"]
+    calendar_id = args.calendar_id or config["GoogleCredentials"]["GoogleCalendarID"]
+    calendar_uri = config.get("config", "outlookurl")
+    log_level = config.get("config", "loglevel")
+    requires_auth = config.getboolean("config", "requiresauthcode")
+    days_to_fetch = args.n or config.get("config", "daystofetch")
+    page_load_delay = config.get("config", "pageloaddelay")
+    show_browser_window = args.show_browser
 
-main(username, password, calendar_id, args)
+    auth_code = args.auth_code
+
+    assert username
+    assert password
+    assert calendar_id
+
+    if hasattr(logging, log_level):
+        log.setLevel(getattr(logging, log_level))
+    else:
+        log.warning("Tried to set invalid log level %s, defaulting to INFO", log_level)
+        log.setLevel(logging.INFO)
+
+    app(
+        username,
+        password,
+        calendar_id,
+        calendar_uri,
+        days_to_fetch=days_to_fetch,
+        no_auth_code=requires_auth,
+        auth_code=auth_code,
+        page_load_delay=page_load_delay,
+        show_browser_window=show_browser_window,
+    )
+
+
+def main():
+    parser = ArgumentParser("outlook-calendar-sync")
+    subp = parser.add_subparsers()
+    init_parser = subp.add_parser("init", description="Setup the initial config file")
+    init_parser.add_argument(
+        "--path", help=f"Path to save the config file to (defaults to {default_config_path})", default=None, type=os.PathLike
+    )
+    init_parser.set_defaults(func=lambda arg: _init_config(arg.path))
+
+    parser.add_argument("-n", type=int, help="Number of days in the future to sync", default=5)
+    parser.add_argument(
+        "--config", type=os.PathLike, help=f"Path to configuration file (defaults to {default_config_path})", default=default_config_path
+    )
+    parser.add_argument("--email", type=str, help="Outlook username to sync to")
+    parser.add_argument("--password", type=str, help="Outlook password")
+    parser.add_argument("--calendar-id", type=str, help="Google calendar ID to sync to")
+    parser.add_argument(
+        "--auth-code", type=str, help="Microsoft authenticator 2fa code. If not specified, will ask for input during execution"
+    )
+    parser.add_argument("--show-browser", action="store_true", default=False, help="Show the browser window")
+    parser.set_defaults(func=app_handler)
+    args = parser.parse_args(sys.argv[1:])
+    args.func(args)
+
+
+if __name__ == "__main__":
+    main()
