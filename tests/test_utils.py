@@ -8,7 +8,7 @@ event_tests = [
     "event from Monday, November 13, 2022 10:30 to 11:00 Meeting to discuss leaving the EU Vfb organiser Nigel Farage event shown as Free",  # noqa: E501
     "event from Saturday, October 19, 2025 11:00 to 11:30 Reminder: Everything is awful Vfb location planet earth organiser Science event shown as Busy",  # noqa: E501
     "all day event from Saturday, October 19, 2025 to Sunday, October 27 Reminder: Everything is awful Vfb location planet earth organiser Science event shown as Busy",  # noqa: E501
-    "event from Thursday, December 01, 2022 12:00 to 13:00 Lunch/Quiet Hour  organiser Captain drunk of the lord of the rings recurring event shown as Busy", # noqa: E501
+    "event from Thursday, December 01, 2022 12:00 to 13:00 Lunch/Quiet Hour  organiser Captain drunk of the lord of the rings recurring event shown as Busy",  # noqa: E501
 ]
 event_test_responses = [
     {

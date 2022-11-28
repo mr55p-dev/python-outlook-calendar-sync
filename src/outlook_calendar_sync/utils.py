@@ -56,8 +56,6 @@ def get_event(detail: str):
     organiser = sanitize(match.group(14))
     show_as = sanitize(match.group(15))
 
-
-
     transparancy = "opaque" if show_as and show_as.lower() == "busy" else "transparent"
 
     event = {
@@ -84,6 +82,7 @@ def is_all_day(event) -> bool:
 
 
 T = TypeVar("T")
+
 
 def sanitize(field: str | None) -> str | None:
     if field:

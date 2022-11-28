@@ -74,7 +74,7 @@ def outlook_select_page_events(driver, days=1, delay=5):
         sleep(delay)
 
         # Dump the page source into BS
-        log.debug("Collected page source for day %d", i+1)
+        log.debug("Collected page source for day %d", i + 1)
         soup = BeautifulSoup(driver.page_source, features="html.parser")
         yield [get_event(i["aria-label"]) for i in soup.find_all(find_event)]
 

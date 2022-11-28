@@ -87,7 +87,7 @@ def main():
     parser.set_defaults(func=app_handler)
     args = parser.parse_args(sys.argv[1:])
 
-    # Setup the logging
+    # Setup the logging
     logging.basicConfig(level=getattr(logging, args.log))
     logging.getLogger("selenium").setLevel(logging.INFO)
     logging.getLogger("urllib3").setLevel(logging.INFO)
