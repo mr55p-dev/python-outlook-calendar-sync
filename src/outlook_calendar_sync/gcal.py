@@ -8,7 +8,7 @@ from googleapiclient.discovery import build
 
 from outlook_calendar_sync.utils import compare_events
 
-app_log = logging.getLogger("application")
+log = logging.getLogger(__name__)
 
 # If modifying these scopes, delete the file token.json.
 SCOPES = ["https://www.googleapis.com/auth/calendar"]
@@ -51,7 +51,7 @@ def find_new_outlook_events(outlook_events, gcal_events):
         if not event_in_gcal:
             new_events.append(o_event)
 
-    app_log.info("Found %d events to add", len(new_events))
+    log.info("Found %d events to add", len(new_events))
 
     return new_events
 
@@ -70,7 +70,7 @@ def find_incorrect_gcal_events(outlook_events, gcal_events):
         if not event_in_outlook:
             incorrect_events.append(g_event)
 
-    app_log.info("Found %d events to remove", len(incorrect_events))
+    log.info("Found %d events to remove", len(incorrect_events))
 
     return incorrect_events
 

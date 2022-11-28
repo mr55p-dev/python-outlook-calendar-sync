@@ -20,15 +20,11 @@ import sys
 from argparse import ArgumentParser, Namespace
 
 from outlook_calendar_sync.application import main as app
-from outlook_calendar_sync.utils import (
-    _init_config,
-    default_config_path,
-    load_config,
-    log,
-)
+from outlook_calendar_sync.utils import _init_config, default_config_path, load_config
 
 
 def app_handler(args: Namespace):
+
     config = load_config(args.config)
     config.read(args.config)
 
@@ -36,7 +32,6 @@ def app_handler(args: Namespace):
     password = args.password or config["OutlookCredentials"]["OutlookPassword"]
     calendar_id = args.calendar_id or config["GoogleCredentials"]["GoogleCalendarID"]
     calendar_uri = config.get("config", "outlookurl")
-    log_level = config.get("config", "loglevel")
     requires_auth = config.getboolean("config", "requiresauthcode")
     days_to_fetch = int(args.n or config.get("config", "daystofetch"))
     page_load_delay = int(config.get("config", "pageloaddelay"))
@@ -48,11 +43,11 @@ def app_handler(args: Namespace):
     assert password
     assert calendar_id
 
-    if hasattr(logging, log_level):
-        log.setLevel(getattr(logging, log_level))
-    else:
-        log.warning("Tried to set invalid log level %s, defaulting to INFO", log_level)
-        log.setLevel(logging.INFO)
+    # if hasattr(logging, log_level):
+    #     log.setLevel(getattr(logging, log_level))
+    # else:
+    #     log.warning("Tried to set invalid log level %s, defaulting to INFO", log_level)
+    #     log.setLevel(logging.INFO)
 
     app(
         username,
@@ -87,8 +82,16 @@ def main():
         "--auth-code", type=str, help="Microsoft authenticator 2fa code. If not specified, will ask for input during execution"
     )
     parser.add_argument("--show-browser", action="store_true", default=False, help="Show the browser window")
+    parser.add_argument("--log", type=str, help="Log level to use (defaults to INFO)", default="INFO")
+
     parser.set_defaults(func=app_handler)
     args = parser.parse_args(sys.argv[1:])
+
+    # Setup the logging
+    logging.basicConfig(level=getattr(logging, args.log))
+    logging.getLogger("selenium").setLevel(logging.INFO)
+    logging.getLogger("urllib3").setLevel(logging.INFO)
+
     args.func(args)
 
 
