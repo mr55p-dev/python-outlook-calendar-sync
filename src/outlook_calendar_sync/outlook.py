@@ -5,7 +5,9 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 
-from outlook_calendar_sync.utils import find_event, get_event, log
+from outlook_calendar_sync.utils import find_event, get_event
+
+# from outlook_calendar_sync.utils import find_event, get_event, log
 
 
 def outlook_login(
