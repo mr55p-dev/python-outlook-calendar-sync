@@ -15,7 +15,7 @@ def read(*names, **kwargs):
 
 setup(
     name="outlook-calendar-sync",
-    version="0.0.1",
+    version="0.0.2",
     license="BSD-2-Clause",
     description="CLI interface to scrape outlook calendar events from the webapp and insert them to a google calendar account.",
     long_description="{}\n{}".format(
@@ -41,8 +41,6 @@ setup(
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3 :: Only",
-        "Programming Language :: Python :: 3.7",
-        "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",

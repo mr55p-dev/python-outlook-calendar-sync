@@ -4,6 +4,7 @@ import re
 from datetime import datetime
 from os import PathLike
 from pathlib import Path
+from typing import TypeVar
 
 log = logging.getLogger("application")
 log.addHandler(logging.StreamHandler())
@@ -71,6 +72,25 @@ def get_event(detail: str):
 
 def compare_events(g_event, o_event) -> bool:
     return g_event == o_event
+
+
+def is_all_day(event) -> bool:
+    """
+    Check if an event is an all-day event.
+    """
+    return "dateTime" in event.get("start", {})
+
+
+T = TypeVar("T")
+
+
+def dedupe_events(events: list[T]) -> list[T]:
+    unique_events = []
+    for event in events:
+        if event not in unique_events:
+            unique_events.append(event)
+
+    return unique_events
 
 
 def _init_config(user_path: PathLike = None):

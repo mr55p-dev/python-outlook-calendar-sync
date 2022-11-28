@@ -38,8 +38,8 @@ def app_handler(args: Namespace):
     calendar_uri = config.get("config", "outlookurl")
     log_level = config.get("config", "loglevel")
     requires_auth = config.getboolean("config", "requiresauthcode")
-    days_to_fetch = args.n or config.get("config", "daystofetch")
-    page_load_delay = config.get("config", "pageloaddelay")
+    days_to_fetch = int(args.n or config.get("config", "daystofetch"))
+    page_load_delay = int(config.get("config", "pageloaddelay"))
     show_browser_window = args.show_browser
 
     auth_code = args.auth_code

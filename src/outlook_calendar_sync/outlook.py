@@ -7,6 +7,8 @@ from selenium.webdriver.common.by import By
 
 from outlook_calendar_sync.utils import find_event, get_event
 
+# from outlook_calendar_sync.utils import find_event, get_event, log
+
 
 def outlook_login(
     driver,
@@ -16,20 +18,26 @@ def outlook_login(
     auth_code=None,
     no_auth_code: bool = False,
 ):
+    password = password.strip()
     driver.get(calendar_uri)
 
     driver.implicitly_wait(10)
 
-    username_field = driver.find_element(By.ID, "i0116")
-    signin_btn = driver.find_element(By.ID, "idSIButton9")
+    # username_field = driver.find_element(By.ID, "i0116")
+    # signin_btn = driver.find_element(By.ID, "idSIButton9")
+    username_field = driver.find_element(By.XPATH, r'//*[@id="i0116"]')
+    signin_btn = driver.find_element(By.XPATH, r'//*[@id="idSIButton9"]')
 
     username_field.send_keys(username)
     signin_btn.click()
 
-    password_btn = driver.find_element(By.ID, "passwordInput")
-    signin_btn_auth = driver.find_element(By.ID, "submitButton")
+    # password_field = driver.find_element(By.ID, "passwordInput")
+    # signin_btn_auth = driver.find_element(By.ID, "submitButton")
+    password_field = driver.find_element(By.XPATH, r'//*[@id="passwordInput"]')
+    signin_btn_auth = driver.find_element(By.XPATH, r'//*[@id="submitButton"]')
 
-    password_btn.send_keys(password)
+    # password_field.send_keys(password)
+    password_field.send_keys(input("Password: "))
     signin_btn_auth.click()
 
     if not no_auth_code:

@@ -11,7 +11,7 @@ from outlook_calendar_sync.outlook import (
     outlook_login,
     outlook_select_page_events,
 )
-from outlook_calendar_sync.utils import log
+from outlook_calendar_sync.utils import dedupe_events, log
 
 
 def main(
@@ -22,7 +22,7 @@ def main(
     days_to_fetch: int = 1,
     page_load_delay: int = 10,
     show_browser_window: bool = False,
-    auth_code: str = None,
+    auth_code: str = "",
     no_auth_code: bool = False,
 ):
     """Application logic to open a browser session, collect events, parse them
@@ -49,7 +49,11 @@ def main(
     # Get the outlook events into gcal form
     events_iter = outlook_select_page_events(calendar_session, days=days_to_fetch, delay=page_load_delay)
     outlook_events = [j for i in events_iter for j in i if i if j]
-    log.debug(outlook_events)
+    log.debug("Collected %d events", len(outlook_events))
+
+    # Deduplicate all day events
+    outlook_events = dedupe_events(outlook_events)
+    log.debug("%d events remain after deduplication", len(outlook_events))
 
     # Setup the google api service
     service = get_gcal_api()
