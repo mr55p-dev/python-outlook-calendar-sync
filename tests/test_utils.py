@@ -1,5 +1,3 @@
-from datetime import datetime
-from os import wait
 import pytest
 
 from outlook_calendar_sync.utils import dedupe_events, get_event
