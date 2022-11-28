@@ -1,9 +1,10 @@
 import configparser
 import logging
 import re
-from datetime import datetime
-from os import PathLike
+from datetime import datetime, timedelta
+from os import PathLike, wait
 from pathlib import Path
+from typing import Any, Type, TypeVar
 
 log = logging.getLogger("application")
 log.addHandler(logging.StreamHandler())
@@ -72,6 +73,71 @@ def get_event(detail: str):
 def compare_events(g_event, o_event) -> bool:
     return g_event == o_event
 
+
+
+def is_all_day(event) -> bool:
+    """
+    Check if an event is an all-day event.
+    """
+    return 'dateTime' in event.get('start', {})
+
+
+def hash_event(event) -> str:
+    return str(event["summary"]) + str(event["organizer"]) + str(event["location"])
+
+T = TypeVar('T')
+def dedupe_events(events: list[T]) -> list[T]:
+    unique_events = []
+    for event in events:
+        if event not in unique_events:
+            unique_events.append(event)
+
+    return unique_events
+
+
+   
+
+# def is_monotonic(seq: list[datetime]) -> bool:
+#     """
+#     Check if a sequence of dates is monotonically increasing
+#     """
+#     for a, b in zip(seq, seq[1:]):
+#         if a + timedelta(days=1) != b:
+#             return False
+#
+#     return True
+#         
+#         
+# T = TypeVar('T')
+# def dedupe_events(events: list[T]) -> list[T]:
+#     """
+#     Function to remove duplicate all-day events from a list passed in.
+#     Note that only all-dat events should be passed in here.
+#     """
+#     # This is functionally a hash of the event which is not determined by the start or end times.
+#     get_topic = lambda event: {"summary": event["summary"], "organizer": event["organizer"], "location": event["location"]}
+#     topics = [get_topic(event) for event in events]
+#     duplicated_events = []
+#
+#     for event in events:
+#         event_topic = get_topic(event)
+#         # Check we have not already identified these duplicates
+#         if event_topic in [get_topic(i) for i in duplicated_events]:
+#             continue
+#
+#         matches = [j for j in events if get_topic(j) == event_topic]
+#         assert len(matches) >= 1
+#
+#         # If the event only occurs once, we exit
+#         if len(matches) == 1:
+#             continue
+#
+#         # If not, check that the events form a consecutive stream of days.
+#         get_date = lambda e: datetime.strptime(e, "%Y-%m-%d") 
+#         
+#         start_dates = sorted([get_date(event["start"]["date"]) for event in matches])
+#         end_dates = sorted([get_date(event["end"]["date"]) for event in matches])
+#
 
 def _init_config(user_path: PathLike = None):
     if user_path:
