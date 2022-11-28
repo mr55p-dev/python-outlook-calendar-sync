@@ -23,21 +23,16 @@ def outlook_login(
 
     driver.implicitly_wait(10)
 
-    # username_field = driver.find_element(By.ID, "i0116")
-    # signin_btn = driver.find_element(By.ID, "idSIButton9")
     username_field = driver.find_element(By.XPATH, r'//*[@id="i0116"]')
     signin_btn = driver.find_element(By.XPATH, r'//*[@id="idSIButton9"]')
 
     username_field.send_keys(username)
     signin_btn.click()
 
-    # password_field = driver.find_element(By.ID, "passwordInput")
-    # signin_btn_auth = driver.find_element(By.ID, "submitButton")
     password_field = driver.find_element(By.XPATH, r'//*[@id="passwordInput"]')
     signin_btn_auth = driver.find_element(By.XPATH, r'//*[@id="submitButton"]')
 
-    # password_field.send_keys(password)
-    password_field.send_keys(input("Password: "))
+    password_field.send_keys(password)
     signin_btn_auth.click()
 
     if not no_auth_code:
