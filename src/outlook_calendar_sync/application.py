@@ -1,3 +1,4 @@
+import logging
 from datetime import datetime, timedelta
 
 from outlook_calendar_sync.gcal import (
@@ -11,7 +12,9 @@ from outlook_calendar_sync.outlook import (
     outlook_login,
     outlook_select_page_events,
 )
-from outlook_calendar_sync.utils import dedupe_events, log
+from outlook_calendar_sync.utils import dedupe_events
+
+log = logging.getLogger(__name__)
 
 
 def main(
@@ -43,7 +46,7 @@ def main(
 
     # Set up the driver
     driver = get_selenium_driver(show_browser_window)
-    calendar_session = outlook_login(driver, username, password, calendar_uri, auth_code=auth_code, no_auth_code=no_auth_code)
+    calendar_session = outlook_login(driver, username, password, calendar_uri, auth_code=auth_code)
     log.debug("Outlook session created")
 
     # Get the outlook events into gcal form

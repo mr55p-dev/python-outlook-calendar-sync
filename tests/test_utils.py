@@ -8,6 +8,7 @@ event_tests = [
     "event from Monday, November 13, 2022 10:30 to 11:00 Meeting to discuss leaving the EU Vfb organiser Nigel Farage event shown as Free",  # noqa: E501
     "event from Saturday, October 19, 2025 11:00 to 11:30 Reminder: Everything is awful Vfb location planet earth organiser Science event shown as Busy",  # noqa: E501
     "all day event from Saturday, October 19, 2025 to Sunday, October 27 Reminder: Everything is awful Vfb location planet earth organiser Science event shown as Busy",  # noqa: E501
+    "event from Thursday, December 01, 2022 12:00 to 13:00 Lunch/Quiet Hour  organiser Captain drunk of the lord of the rings recurring event shown as Busy",  # noqa: E501
 ]
 event_test_responses = [
     {
@@ -33,6 +34,14 @@ event_test_responses = [
         "transparency": "transparent",
         "start": {"dateTime": "2022-11-13T10:30:00", "timeZone": "Europe/London"},
         "end": {"dateTime": "2022-11-13T11:00:00", "timeZone": "Europe/London"},
+    },
+    {
+        "summary": "Reminder: Everything is awful",
+        "location": "planet earth",
+        "organizer": {"displayName": "Science", "self": "false"},
+        "transparency": "opaque",
+        "start": {"dateTime": "2025-10-19T11:00:00", "timeZone": "Europe/London"},
+        "end": {"dateTime": "2025-10-19T11:30:00", "timeZone": "Europe/London"},
     },
 ]
 

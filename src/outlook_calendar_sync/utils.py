@@ -6,9 +6,9 @@ from os import PathLike
 from pathlib import Path
 from typing import TypeVar
 
-log = logging.getLogger("application")
-log.addHandler(logging.StreamHandler())
 default_config_path = Path.home() / ".outlook-parser-config.ini"
+
+log = logging.getLogger(__name__)
 
 
 def find_event(tag):
@@ -16,9 +16,9 @@ def find_event(tag):
 
 
 def get_event(detail: str):
-    log.debug("Processing event with detail < %s >", detail)
+    log.debug("Processing event with detail <<<%s>>>", detail)
     match = re.match(
-        r"^(all day )?(?:event from )(\w+), (\w+) (\d+), (\d+) (?:([\d:]+))?\s?to (?:(\w+), (\w+) (\d+), (\d+))?(?:([\d:]+))? (.*)(?: \w{0,3} )(?=location|organiser|recurring|event)(?#After 3 chars)(?:(?:location )(.*?)(?=organiser))?(?#after match location)(?:(?:organiser )(.*?)(?: recurring)?(?= event shown as))?(?#Ater match organiser)(?:(?:recurring)?(?: event shown as) (\w+))$(?#After match event transparency)",  # noqa
+        r"^(all day )?(?:event from )(\w+), (\w+) (\d+), (\d+) (?:([\d:]+))?\s?to (?:(\w+), (\w+) (\d+), (\d+))?(?:([\d:]+))? (.*?)(?: \w{0,3} )(?=location|organiser|recurring|event)(?#After 3 chars)(?:(?:location )(.*?)(?=organiser))?(?#after match location)(?:(?:organiser )(.*?)(?: recurring)?(?= event shown as))?(?#Ater match organiser)(?:(?:recurring)?(?: event shown as) (\w+))$(?#After match event transparency)",  # noqa
         detail,
     )
     if not match:
@@ -51,10 +51,10 @@ def get_event(detail: str):
         start = {"dateTime": start_timestamp.isoformat(), "timeZone": "Europe/London"}
         end = {"dateTime": end_timestamp.isoformat(), "timeZone": "Europe/London"}
 
-    summary = match.group(12)
-    location = match.group(13)
-    organiser = match.group(14)
-    show_as = match.group(15)
+    summary = sanitize(match.group(12))
+    location = sanitize(match.group(13))
+    organiser = sanitize(match.group(14))
+    show_as = sanitize(match.group(15))
 
     transparancy = "opaque" if show_as and show_as.lower() == "busy" else "transparent"
 
@@ -82,6 +82,12 @@ def is_all_day(event) -> bool:
 
 
 T = TypeVar("T")
+
+
+def sanitize(field: str | None) -> str | None:
+    if field:
+        return field.strip()
+    return None
 
 
 def dedupe_events(events: list[T]) -> list[T]:
