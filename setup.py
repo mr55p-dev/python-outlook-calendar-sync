@@ -41,11 +41,10 @@ setup(
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3 :: Only",
-        "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
         "Programming Language :: Python :: Implementation :: CPython",
-        "Programming Language :: Python :: Implementation :: PyPy",
+        # "Programming Language :: Python :: Implementation :: PyPy",
         "Topic :: Utilities",
     ],
     project_urls={
@@ -54,7 +53,7 @@ setup(
         "Issue Tracker": "https://github.com/mr55p-dev/python-outlook-calendar-sync/issues",
     },
     keywords=["outlook", "calendar", "gcal", "office365", "web-scraping", "selenium", "cli"],
-    python_requires=">=3.7",
+    python_requires=">=3.10",
     install_requires=[
         "selenium>=4.6",
         "beautifulsoup4>=4.11",
