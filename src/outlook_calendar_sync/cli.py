@@ -32,7 +32,7 @@ def app_handler(args: Namespace):
     password = args.password or config["OutlookCredentials"]["OutlookPassword"]
     calendar_id = args.calendar_id or config["GoogleCredentials"]["GoogleCalendarID"]
     calendar_uri = config.get("config", "outlookurl")
-    requires_auth = config.getboolean("config", "requiresauthcode")
+    requires_auth = args.no_auth
     days_to_fetch = int(args.n or config.get("config", "daystofetch"))
     page_load_delay = int(config.get("config", "pageloaddelay"))
     show_browser_window = args.show_browser
@@ -55,7 +55,7 @@ def app_handler(args: Namespace):
         calendar_id,
         calendar_uri,
         days_to_fetch=days_to_fetch,
-        no_auth_code=requires_auth,
+        requires_auth=requires_auth,
         auth_code=auth_code,
         page_load_delay=page_load_delay,
         show_browser_window=show_browser_window,
@@ -83,6 +83,7 @@ def main():
     )
     parser.add_argument("--show-browser", action="store_true", default=False, help="Show the browser window")
     parser.add_argument("--log", type=str, help="Log level to use (defaults to INFO)", default="INFO")
+    parser.add_argument("--no-auth", action="store_false", default=True, help="Pass this flag if 2fa auth is not required")
 
     parser.set_defaults(func=app_handler)
     args = parser.parse_args(sys.argv[1:])

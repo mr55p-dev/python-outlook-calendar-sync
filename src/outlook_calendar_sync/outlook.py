@@ -18,6 +18,7 @@ def outlook_login(
     password: str,
     calendar_uri: str,
     auth_code=None,
+    requires_auth=True,
 ):
     password = password.strip()
     driver.get(calendar_uri)
@@ -39,16 +40,17 @@ def outlook_login(
     signin_btn_auth.click()
     log.debug("Submitted password")
 
-    # Handle 2fa
-    log.debug("Expecting 2fa authentication required")
-    auth_code_field = driver.find_element(By.XPATH, '//*[@id="idTxtBx_SAOTCC_OTC"]')
-    auth_code_submit = driver.find_element(By.XPATH, '//*[@id="idSubmit_SAOTCC_Continue"]')
+    if requires_auth:
+        # Handle 2fa
+        log.debug("Expecting 2fa authentication required")
+        auth_code_field = driver.find_element(By.XPATH, '//*[@id="idTxtBx_SAOTCC_OTC"]')
+        auth_code_submit = driver.find_element(By.XPATH, '//*[@id="idSubmit_SAOTCC_Continue"]')
 
-    auth_code = auth_code or input("Provide the authenticator code: ")
+        auth_code = auth_code or input("Provide the authenticator code: ")
 
-    log.debug("Using code '%s'", auth_code)
-    auth_code_field.send_keys(auth_code)
-    auth_code_submit.click()
+        log.debug("Using code '%s'", auth_code)
+        auth_code_field.send_keys(auth_code)
+        auth_code_submit.click()
 
     try:
         log.debug("Passed 'stay signed-in' prompt")

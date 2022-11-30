@@ -26,7 +26,7 @@ def main(
     page_load_delay: int = 10,
     show_browser_window: bool = False,
     auth_code: str = "",
-    no_auth_code: bool = False,
+    requires_auth: bool = True,
 ):
     """Application logic to open a browser session, collect events, parse them
     and synchronise them with a google calendar.
@@ -46,7 +46,7 @@ def main(
 
     # Set up the driver
     driver = get_selenium_driver(show_browser_window)
-    calendar_session = outlook_login(driver, username, password, calendar_uri, auth_code=auth_code)
+    calendar_session = outlook_login(driver, username, password, calendar_uri, auth_code=auth_code, requires_auth=requires_auth)
     log.debug("Outlook session created")
 
     # Get the outlook events into gcal form
