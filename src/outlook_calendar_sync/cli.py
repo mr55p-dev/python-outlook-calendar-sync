@@ -90,8 +90,11 @@ def main():
 
     # Setup the logging
     logging.basicConfig(level=getattr(logging, args.log))
-    # logging.getLogger("selenium").setLevel(logging.INFO)
-    # logging.getLogger("urllib3").setLevel(logging.INFO)
+    selenium_logger = logging.getLogger("selenium")
+    urllib_logger = logging.getLogger("urllib3")
+
+    selenium_logger.propagate = False
+    urllib_logger.propagate = False
 
     args.func(args)
 
