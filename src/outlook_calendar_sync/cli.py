@@ -32,7 +32,7 @@ def app_handler(args: Namespace):
     password = args.password or config["OutlookCredentials"]["OutlookPassword"]
     calendar_id = args.calendar_id or config["GoogleCredentials"]["GoogleCalendarID"]
     calendar_uri = config.get("config", "outlookurl")
-    requires_auth = args.no_auth
+    requires_auth = not args.no_auth
     days_to_fetch = int(args.n or config.get("config", "daystofetch"))
     page_load_delay = int(config.get("config", "pageloaddelay"))
     show_browser_window = args.show_browser
@@ -83,15 +83,15 @@ def main():
     )
     parser.add_argument("--show-browser", action="store_true", default=False, help="Show the browser window")
     parser.add_argument("--log", type=str, help="Log level to use (defaults to INFO)", default="INFO")
-    parser.add_argument("--no-auth", action="store_false", default=True, help="Pass this flag if 2fa auth is not required")
+    parser.add_argument("--no-auth", action="store_true", default=False, help="Pass this flag if 2fa auth is not required")
 
     parser.set_defaults(func=app_handler)
     args = parser.parse_args(sys.argv[1:])
 
     # Setup the logging
     logging.basicConfig(level=getattr(logging, args.log))
-    logging.getLogger("selenium").setLevel(logging.INFO)
-    logging.getLogger("urllib3").setLevel(logging.INFO)
+    # logging.getLogger("selenium").setLevel(logging.INFO)
+    # logging.getLogger("urllib3").setLevel(logging.INFO)
 
     args.func(args)
 
