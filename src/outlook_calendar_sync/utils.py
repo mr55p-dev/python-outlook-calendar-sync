@@ -6,7 +6,7 @@ from os import PathLike
 from pathlib import Path
 from typing import TypeVar
 
-default_config_path = Path.home() / ".outlook-parser-config.ini"
+default_config_path = Path.home() / ".config" / "outlook-calendar-sync" / ".config.ini"
 
 log = logging.getLogger(__name__)
 
